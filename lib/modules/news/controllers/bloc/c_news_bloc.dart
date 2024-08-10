@@ -13,7 +13,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     on<CreateNews>(_onCreateNews);
   }
 
-  _onFetchNewsByCategory(
+  Future<void> _onFetchNewsByCategory(
       FetchNewsByCategory event, Emitter<NewsState> emit) async {
     emit(NewsLoading());
     try {
@@ -25,18 +25,17 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     }
   }
 
-  _onEditNews(EditNews event, Emitter<NewsState> emit) async {
-    emit(NewsLoading());
+  Future<void> _onEditNews(EditNews event, Emitter<NewsState> emit) async {
     try {
       await newsRepository.updateNews(event.news);
       emit(NewsEdited(event.news));
+      add(FetchNewsByCategory(event.news.categoriaId));
     } catch (e) {
       emit(NewsError(e.toString()));
     }
   }
 
-  _onDeleteNews(DeleteNews event, Emitter<NewsState> emit) async {
-    emit(NewsLoading());
+  Future<void> _onDeleteNews(DeleteNews event, Emitter<NewsState> emit) async {
     try {
       await newsRepository.deleteNews(event.newsId);
       emit(NewsDeleted(event.newsId));
@@ -45,16 +44,11 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     }
   }
 
-  _onCreateNews(CreateNews event, Emitter<NewsState> emit) async {
-    emit(NewsLoading());
+  Future<void> _onCreateNews(CreateNews event, Emitter<NewsState> emit) async {
     try {
       await newsRepository.createNews(event.news);
       emit(NewsCreated(event.news));
-      // Opcional: Actualizar la lista de noticias si es necesario
-      final noticias =
-          await newsRepository.getNoticiasByCategoria(event.news.categoriaId);
-      noticias.insert(0, event.news);
-      emit(NewsLoaded(noticias));
+      add(FetchNewsByCategory(event.news.categoriaId));
     } catch (e) {
       emit(NewsError(e.toString()));
     }

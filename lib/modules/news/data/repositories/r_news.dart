@@ -45,10 +45,12 @@ class NewsRepository {
     ),
   ];
 
-  Future<List<News>> getNoticiasByCategoria(int categoriaId) async {
-    await Future.delayed(const Duration(milliseconds: 500)); // Simular retraso de red
-    return _noticias.where((news) => news.categoriaId == categoriaId).toList();
-  }
+ Future<List<News>> getNoticiasByCategoria(int categoriaId) async {
+  await Future.delayed(const Duration(milliseconds: 500)); 
+  final noticiasFiltradas = _noticias.where((news) => news.categoriaId == categoriaId).toList();
+  noticiasFiltradas.sort((a, b) => b.fecha.compareTo(a.fecha));  // Ordenar por fecha descendente
+  return noticiasFiltradas;
+}
 
 
   Future<void> updateNews(News updatedNews) async {

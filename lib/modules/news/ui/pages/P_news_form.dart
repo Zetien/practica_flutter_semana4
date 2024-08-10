@@ -57,10 +57,11 @@ class _NewsFormState extends State<NewsForm> {
       );
       if (widget.isEditing) {
         context.read<NewsBloc>().add(EditNews(news));
-      } else {
+        } else {
         context.read<NewsBloc>().add(CreateNews(news));
       }
-      Navigator.of(context).pop(); // Cierra el formulario después de guardar
+      Navigator.of(context).pop();
+     
     }
   }
 
