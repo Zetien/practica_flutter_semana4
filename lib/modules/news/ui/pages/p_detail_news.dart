@@ -8,7 +8,7 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final News noticia = ModalRoute.of(context)!.settings.arguments as News;
+    final News noticia = ModalRoute.of(context)?.settings.arguments as News;
 
     return Scaffold(
       appBar: AppBar(

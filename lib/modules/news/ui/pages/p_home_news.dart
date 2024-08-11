@@ -26,6 +26,7 @@ class HomeScreen extends StatelessWidget {
       ),
 
         appBar: AppBar(
+          automaticallyImplyLeading: false,
             title: Center(
               child: CustomText(
                 text: 'Noticias',
